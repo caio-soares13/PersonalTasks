@@ -1,4 +1,4 @@
-package com.example.personaltasks.view.adapter
+package com.example.personaltasks.controller.adapter
 
 import android.view.LayoutInflater
 import android.view.View

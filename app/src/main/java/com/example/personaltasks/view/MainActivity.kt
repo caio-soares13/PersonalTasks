@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.personaltasks.R
 import com.example.personaltasks.databinding.ActivityMainBinding
 import com.example.personaltasks.model.Task
-import com.example.personaltasks.view.adapter.TaskAdapter
+import com.example.personaltasks.controller.adapter.TaskAdapter
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
