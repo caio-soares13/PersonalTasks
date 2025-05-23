@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: TaskAdapter
     private var taskList = mutableListOf<Task>()  // substitua por dados do banco depois
     private var selectedTask: Task? = null
+    private var selectedTaskPosition: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +71,14 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_context_task, menu)
     }
 
+    fun onItemLongClick(view: View, task: Task) {
+        selectedTaskPosition = taskList.indexOf(task)
+        view.showContextMenu() // abre o menu de contexto para esse item
+    }
+
     override fun onContextItemSelected(item: MenuItem): Boolean {
+
+
         return when (item.itemId) {
             R.id.menu_edit -> {
                 Toast.makeText(this, "Editar: ${selectedTask?.title}", Toast.LENGTH_SHORT).show()

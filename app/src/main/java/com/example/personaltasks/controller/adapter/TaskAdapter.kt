@@ -21,7 +21,7 @@ class TaskAdapter(
         init {
             itemView.setOnLongClickListener {
                 onItemLongClick(it, tasks[adapterPosition])
-                false
+                true
             }
         }
     }
