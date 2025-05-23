@@ -9,11 +9,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.personaltasks.R
 import com.example.personaltasks.databinding.ActivityMainBinding
@@ -112,6 +110,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menu_delete -> {
                 Log.d("MainActivity", "Excluir clicado: ${selectedTask?.title}")
+                taskList.removeAt(selectedTaskPosition)
+                adapter.notifyItemRemoved(selectedTaskPosition)
+                selectedTaskPosition = -1
+                Toast.makeText(this, "Tarefa excluída", Toast.LENGTH_SHORT).show()
                 true
             }
             R.id.menu_details -> {

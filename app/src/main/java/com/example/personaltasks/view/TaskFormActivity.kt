@@ -5,6 +5,7 @@ import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.personaltasks.databinding.ActivityTaskFormBinding
 import com.example.personaltasks.model.Task
@@ -80,6 +81,13 @@ class TaskFormActivity : AppCompatActivity(){
             val intent = Intent()
             intent.putExtra("task", task)
             intent.putExtra("mode", mode)
+
+            if (mode == "edit") {
+                Toast.makeText(this, "Tarefa editada com sucesso", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Tarefa criada com sucesso", Toast.LENGTH_SHORT).show()
+            }
+
             setResult(RESULT_OK, intent)
             finish()
         }
