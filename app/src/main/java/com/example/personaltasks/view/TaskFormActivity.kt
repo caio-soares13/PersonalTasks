@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.personaltasks.controller.TaskController
 import com.example.personaltasks.databinding.ActivityTaskFormBinding
 import com.example.personaltasks.model.Task
 import java.text.SimpleDateFormat
@@ -14,6 +15,7 @@ import java.util.Locale
 
 class TaskFormActivity : AppCompatActivity(){
     private lateinit var binding: ActivityTaskFormBinding
+    private lateinit var taskController: TaskController
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     private val calendar = Calendar.getInstance()
 
@@ -21,6 +23,7 @@ class TaskFormActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         binding = ActivityTaskFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
 
         // Abre o DatePicker ao clicar no campo de data
         binding.editDeadline.setOnClickListener {

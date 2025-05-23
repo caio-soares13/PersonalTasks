@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.personaltasks.R
+import com.example.personaltasks.controller.TaskController
 import com.example.personaltasks.databinding.ActivityMainBinding
 import com.example.personaltasks.model.Task
 import com.example.personaltasks.controller.adapter.TaskAdapter
@@ -21,6 +22,7 @@ import com.example.personaltasks.controller.adapter.TaskAdapter
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: TaskAdapter
+    private lateinit var controller: TaskController
     private var taskList = mutableListOf<Task>()  // substitua por dados do banco depois
     private var selectedTask: Task? = null
     private var selectedTaskPosition: Int = -1
@@ -33,15 +35,10 @@ class MainActivity : AppCompatActivity() {
             task?.let {
                 if (mode == "edit") {
                     // atualizar a tarefa na lista
-                    val index = taskList.indexOfFirst { t -> t.id == it.id }
-                    if (index != -1) {
-                        taskList[index] = it
-                        adapter.notifyItemChanged(index)
-                    }
+                   controller.updateTask(it)
                 } else {
                     // nova tarefa
-                    taskList.add(it)
-                    adapter.notifyItemInserted(taskList.size - 1)
+                    controller.addTask(it)
                 }
             }
         }
@@ -63,6 +60,8 @@ class MainActivity : AppCompatActivity() {
             selectedTaskPosition = taskList.indexOf(task)
             openContextMenu(view)
         }
+
+        controller = TaskController(taskList, adapter)
 
         binding.recyclerTasks.layoutManager = LinearLayoutManager(this)
         binding.recyclerTasks.adapter = adapter
@@ -110,8 +109,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menu_delete -> {
                 Log.d("MainActivity", "Excluir clicado: ${selectedTask?.title}")
-                taskList.removeAt(selectedTaskPosition)
-                adapter.notifyItemRemoved(selectedTaskPosition)
+                selectedTask?.let {
+                    controller.deleteTask(it)
+                }
+
                 selectedTaskPosition = -1
                 Toast.makeText(this, "Tarefa excluída", Toast.LENGTH_SHORT).show()
                 true

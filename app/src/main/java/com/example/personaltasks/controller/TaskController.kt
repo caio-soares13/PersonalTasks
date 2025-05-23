@@ -1,5 +1,6 @@
 package com.example.personaltasks.controller
 
+import com.example.personaltasks.controller.adapter.TaskAdapter
 import com.example.personaltasks.model.Task
 
 class TaskController(private val taskList: MutableList<Task>, private val adapter: TaskAdapter) {
