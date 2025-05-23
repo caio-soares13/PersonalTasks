@@ -1,10 +1,12 @@
 package com.example.personaltasks.view
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.personaltasks.databinding.ActivityTaskFormBinding
+import com.example.personaltasks.model.Task
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -28,9 +30,23 @@ class TaskFormActivity : AppCompatActivity(){
             finish()
         }
 
-        // Botão Salvar (ainda vamos implementar o retorno de dados)
+        // Botão Salvar
         binding.buttonSave.setOnClickListener {
-            // TODO: Validar campos e devolver dados para a tela anterior
+            val title = binding.editTitle.text.toString().trim()
+            val description = binding.editDescription.text.toString().trim()
+            val deadline = binding.editDeadline.text.toString().trim()
+
+            if (title.isEmpty()) {
+                binding.editTitle.error = "Título é obrigatório"
+                return@setOnClickListener
+            }
+
+            val task = Task(0, title, description, deadline)
+
+            val intent = Intent()
+            intent.putExtra("task", task)
+            setResult(RESULT_OK, intent)
+            finish()
         }
     }
 

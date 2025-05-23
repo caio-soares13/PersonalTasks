@@ -77,7 +77,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
+        if (selectedTaskPosition == -1) return super.onContextItemSelected(item)
 
+        val task = taskList[selectedTaskPosition]
 
         return when (item.itemId) {
             R.id.menu_edit -> {
