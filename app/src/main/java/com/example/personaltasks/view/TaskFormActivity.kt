@@ -67,10 +67,19 @@ class TaskFormActivity : AppCompatActivity(){
                 return@setOnClickListener
             }
 
-            val task = Task(0, title, description, deadline)
+            val originalTask = intent.getSerializableExtra("task") as? Task
+            val mode = intent.getStringExtra("mode")
+
+            val task = Task(
+                id = originalTask?.id ?: 0,
+                title = title,
+                description = description,
+                deadline = deadline
+            )
 
             val intent = Intent()
             intent.putExtra("task", task)
+            intent.putExtra("mode", mode)
             setResult(RESULT_OK, intent)
             finish()
         }

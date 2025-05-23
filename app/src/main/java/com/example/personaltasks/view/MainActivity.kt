@@ -31,9 +31,20 @@ class MainActivity : AppCompatActivity() {
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val task = result.data?.getSerializableExtra("task") as? Task
+            val mode = result.data?.getStringExtra("mode")
             task?.let {
-                taskList.add(it)
-                adapter.notifyItemInserted(taskList.size - 1)
+                if (mode == "edit") {
+                    // atualizar a tarefa na lista
+                    val index = taskList.indexOfFirst { t -> t.id == it.id }
+                    if (index != -1) {
+                        taskList[index] = it
+                        adapter.notifyItemChanged(index)
+                    }
+                } else {
+                    // nova tarefa
+                    taskList.add(it)
+                    adapter.notifyItemInserted(taskList.size - 1)
+                }
             }
         }
     }
@@ -93,6 +104,10 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.menu_edit -> {
                 Log.d("MainActivity", "Editar clicado: ${selectedTask?.title}")
+                val intent = Intent(this, TaskFormActivity::class.java)
+                intent.putExtra("task", selectedTask)
+                intent.putExtra("mode", "edit")
+                taskFormLauncher.launch(intent)
                 true
             }
             R.id.menu_delete -> {
