@@ -1,5 +1,6 @@
 package com.example.personaltasks.view
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.ContextMenu
@@ -8,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -23,6 +25,17 @@ class MainActivity : AppCompatActivity() {
     private var taskList = mutableListOf<Task>()  // substitua por dados do banco depois
     private var selectedTask: Task? = null
     private var selectedTaskPosition: Int = -1
+    private val taskFormLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val task = result.data?.getSerializableExtra("task") as? Task
+            task?.let {
+                taskList.add(it)
+                adapter.notifyItemInserted(taskList.size - 1)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.menu_new_task -> {
                 val intent = Intent(this, TaskFormActivity::class.java)
-                startActivity(intent)
+                taskFormLauncher.launch(intent)
                 true
             }
             else -> super.onOptionsItemSelected(item)
