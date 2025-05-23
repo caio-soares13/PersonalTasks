@@ -1,5 +1,6 @@
 package com.example.personaltasks.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.ContextMenu
 import android.view.Menu
@@ -51,7 +52,8 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_new_task -> {
-                Toast.makeText(this, "Nova tarefa (abrir Tela 2)", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, TaskFormActivity::class.java)
+                startActivity(intent)
                 true
             }
             else -> super.onOptionsItemSelected(item)
