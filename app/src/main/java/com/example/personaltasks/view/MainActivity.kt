@@ -3,6 +3,7 @@ package com.example.personaltasks.view
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
@@ -48,8 +49,9 @@ class MainActivity : AppCompatActivity() {
         taskList.add(Task(2, "Comprar leite", "Ir ao mercado", "22/05/2025"))
 
         adapter = TaskAdapter(taskList) { view, task ->
+            Log.d("MainActivity", "Clique longo em: ${task.title}")
             selectedTask = task
-            registerForContextMenu(view)  // necessário antes de abrir menu
+            selectedTaskPosition = taskList.indexOf(task)
             openContextMenu(view)
         }
 
@@ -84,27 +86,21 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_context_task, menu)
     }
 
-    fun onItemLongClick(view: View, task: Task) {
-        selectedTaskPosition = taskList.indexOf(task)
-        view.showContextMenu() // abre o menu de contexto para esse item
-    }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        if (selectedTaskPosition == -1) return super.onContextItemSelected(item)
-
-        val task = taskList[selectedTaskPosition]
+        if (selectedTask == null) return super.onContextItemSelected(item)
 
         return when (item.itemId) {
             R.id.menu_edit -> {
-                Toast.makeText(this, "Editar: ${selectedTask?.title}", Toast.LENGTH_SHORT).show()
+                Log.d("MainActivity", "Editar clicado: ${selectedTask?.title}")
                 true
             }
             R.id.menu_delete -> {
-                Toast.makeText(this, "Excluir: ${selectedTask?.title}", Toast.LENGTH_SHORT).show()
+                Log.d("MainActivity", "Excluir clicado: ${selectedTask?.title}")
                 true
             }
             R.id.menu_details -> {
-                Toast.makeText(this, "Detalhes: ${selectedTask?.title}", Toast.LENGTH_SHORT).show()
+                Log.d("MainActivity", "Detalhes clicado: ${selectedTask?.title}")
                 true
             }
             else -> super.onContextItemSelected(item)

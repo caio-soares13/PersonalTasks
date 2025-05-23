@@ -1,6 +1,7 @@
 package com.example.personaltasks.controller.adapter
 
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -22,6 +23,10 @@ class TaskAdapter(
             itemView.setOnLongClickListener {
                 onItemLongClick(it, tasks[adapterPosition])
                 true
+            }
+            itemView.setOnCreateContextMenuListener { menu, _, _ ->
+                val inflater = MenuInflater(itemView.context)
+                inflater.inflate(R.menu.menu_context_task, menu)
             }
         }
     }
