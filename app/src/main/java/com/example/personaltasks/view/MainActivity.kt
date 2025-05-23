@@ -101,6 +101,12 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menu_details -> {
                 Log.d("MainActivity", "Detalhes clicado: ${selectedTask?.title}")
+                selectedTask?.let { task ->
+                    val intent = Intent(this, TaskFormActivity::class.java)
+                    intent.putExtra("task", task)
+                    intent.putExtra("mode", "details")  // indicar que é modo detalhes
+                    startActivity(intent)
+                }
                 true
             }
             else -> super.onContextItemSelected(item)

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.personaltasks.databinding.ActivityTaskFormBinding
 import com.example.personaltasks.model.Task
@@ -25,6 +26,26 @@ class TaskFormActivity : AppCompatActivity(){
             showDatePicker()
         }
 
+        val task = intent.getSerializableExtra("task") as? Task
+        val mode = intent.getStringExtra("mode")
+
+        if (task != null) {
+            // Preenche os campos com os dados da tarefa
+            binding.editTitle.setText(task.title)
+            binding.editDescription.setText(task.description)
+            binding.editDeadline.setText(task.deadline)
+
+            if (mode == "details") {
+                // Desabilita os campos para apenas visualização
+                binding.editTitle.isEnabled = false
+                binding.editDescription.isEnabled = false
+                binding.editDeadline.isEnabled = false
+
+                // Esconde o botão salvar
+                binding.buttonSave.visibility = View.GONE
+            }
+        }
+
         // Botão Cancelar
         binding.buttonCancel.setOnClickListener {
             finish()
@@ -32,6 +53,11 @@ class TaskFormActivity : AppCompatActivity(){
 
         // Botão Salvar
         binding.buttonSave.setOnClickListener {
+            if (mode == "details") {
+                // Em modo detalhes, botão salvar está escondido, mas só pra garantir
+                return@setOnClickListener
+            }
+
             val title = binding.editTitle.text.toString().trim()
             val description = binding.editDescription.text.toString().trim()
             val deadline = binding.editDeadline.text.toString().trim()
