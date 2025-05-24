@@ -1,30 +1,37 @@
 package com.example.personaltasks.controller
 
+import android.util.Log
 import com.example.personaltasks.controller.adapter.TaskAdapter
+import com.example.personaltasks.data.TaskRepository
 import com.example.personaltasks.model.Task
 
-class TaskController(private val taskList: MutableList<Task>, private val adapter: TaskAdapter) {
+class TaskController(private val taskRepository: TaskRepository, private val adapter: TaskAdapter) {
 
-    fun addTask(task: Task) {
-        taskList.add(task)
-        adapter.notifyItemInserted(taskList.size - 1)
+    suspend fun addTask(task: Task) {
+        Log.d("TaskRepository", "Salvando task no banco: $task")
+        taskRepository.insertTask(task)
+        refreshTasks()
     }
 
-    fun updateTask(updatedTask: Task) {
-        val index = taskList.indexOfFirst { it.id == updatedTask.id }
-        if (index != -1) {
-            taskList[index] = updatedTask
-            adapter.notifyItemChanged(index)
-        }
+    suspend fun updateTask(updatedTask: Task) {
+        Log.d("TaskRepository", "Alterando task no banco: $updatedTask")
+        taskRepository.updateTask(updatedTask)
+        refreshTasks()
     }
 
-    fun deleteTask(task: Task) {
-        val index = taskList.indexOf(task)
-        if (index != -1) {
-            taskList.removeAt(index)
-            adapter.notifyItemRemoved(index)
-        }
+    suspend fun deleteTask(task: Task) {
+        Log.d("TaskRepository", "Deletando task no banco: $task")
+        taskRepository.deleteTask(task)
+        refreshTasks()
     }
 
-    fun getTasks() = taskList.toList()
+    suspend fun getTasks(): List<Task> {
+        Log.d("TaskRepository", "Tasks retornadas do banco")
+        return taskRepository.getAllTasks()
+    }
+
+    suspend fun refreshTasks() {
+        val tasks = taskRepository.getAllTasks()
+        adapter.updateTasks(tasks)
+    }
 }

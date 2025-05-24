@@ -10,7 +10,7 @@ import com.example.personaltasks.R
 import com.example.personaltasks.model.Task
 
 class TaskAdapter(
-    private val tasks: List<Task>,
+    private var tasks: MutableList<Task> = mutableListOf(),
     private val onItemLongClick: (View, Task) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
@@ -31,6 +31,7 @@ class TaskAdapter(
         }
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_task, parent, false)
@@ -45,4 +46,12 @@ class TaskAdapter(
         holder.textDescription.text = task.description
         holder.textDeadline.text = "Data limite: ${task.deadline}"
     }
+
+    fun updateTasks(newTasks: List<Task>) {
+        tasks.clear()
+        tasks.addAll(newTasks)
+        notifyDataSetChanged()
+    }
+
+    fun getCurrentTasks(): List<Task> = tasks
 }

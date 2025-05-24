@@ -10,22 +10,26 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.personaltasks.R
 import com.example.personaltasks.controller.TaskController
 import com.example.personaltasks.databinding.ActivityMainBinding
 import com.example.personaltasks.model.Task
 import com.example.personaltasks.controller.adapter.TaskAdapter
+import com.example.personaltasks.data.DatabaseProvider
+import com.example.personaltasks.data.TaskRepository
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: TaskAdapter
     private lateinit var controller: TaskController
-    private var taskList = mutableListOf<Task>()  // substitua por dados do banco depois
+
     private var selectedTask: Task? = null
     private var selectedTaskPosition: Int = -1
+
     private val taskFormLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -34,11 +38,16 @@ class MainActivity : AppCompatActivity() {
             val mode = result.data?.getStringExtra("mode")
             task?.let {
                 if (mode == "edit") {
-                    // atualizar a tarefa na lista
-                   controller.updateTask(it)
+                    lifecycleScope.launch {
+                        controller.updateTask(it)
+                        loadTasks()
+                    }
+
                 } else {
-                    // nova tarefa
-                    controller.addTask(it)
+                    lifecycleScope.launch {
+                        controller.addTask(it)
+                        loadTasks()
+                    }
                 }
             }
         }
@@ -50,21 +59,37 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Exemplo com tarefas de teste
-        taskList.add(Task(1, "Estudar", "Estudar para prova de Kotlin", "25/05/2025"))
-        taskList.add(Task(2, "Comprar leite", "Ir ao mercado", "22/05/2025"))
-
-        adapter = TaskAdapter(taskList) { view, task ->
-            Log.d("MainActivity", "Clique longo em: ${task.title}")
+        adapter = TaskAdapter { view, task ->
             selectedTask = task
-            selectedTaskPosition = taskList.indexOf(task)
+            selectedTaskPosition = adapter.getCurrentTasks().indexOf(task)
             openContextMenu(view)
         }
 
-        controller = TaskController(taskList, adapter)
+        val taskDao = DatabaseProvider.getDatabase(this).taskDao()
+        val repository = TaskRepository(taskDao)
+
+        controller = TaskController(repository, adapter)
 
         binding.recyclerTasks.layoutManager = LinearLayoutManager(this)
         binding.recyclerTasks.adapter = adapter
+
+        lifecycleScope.launch {
+            val task = Task(
+                id = 0,  // se for autogerado pelo banco, pode deixar 0
+                title = "Tarefa Manual",
+                description = "Inserida diretamente no banco",
+                deadline = "01/06/2025"
+            )
+            controller.addTask(task) // insere no banco
+            loadTasks()              // carrega tasks do banco e atualiza RecyclerView
+        }
+    }
+
+    private fun loadTasks() {
+        lifecycleScope.launch {
+            val tasksFromDb = controller.getTasks()
+            adapter.updateTasks(tasksFromDb)
+        }
     }
 
     // Menu de Opções (Topo)
@@ -110,7 +135,10 @@ class MainActivity : AppCompatActivity() {
             R.id.menu_delete -> {
                 Log.d("MainActivity", "Excluir clicado: ${selectedTask?.title}")
                 selectedTask?.let {
-                    controller.deleteTask(it)
+                    lifecycleScope.launch {
+                        controller.deleteTask(it)
+                        loadTasks()
+                    }
                 }
 
                 selectedTaskPosition = -1
