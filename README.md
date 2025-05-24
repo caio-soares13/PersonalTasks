@@ -48,3 +48,7 @@ Um app Android simples de lista de tarefas pessoais, com suporte a criação, ed
     Escolha um emulador ou conecte um dispositivo real.
 
     Clique em Run (▶️).
+
+## ▶️ Vídeo de execução
+```bash
+https://drive.google.com/drive/folders/1qkhkFU1aWX3NUzjViHc1tKTiqvuJFtkD?usp=drive_link
