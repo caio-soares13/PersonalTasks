@@ -38,12 +38,15 @@ class TaskFormActivity : AppCompatActivity(){
             binding.editTitle.setText(task.title)
             binding.editDescription.setText(task.description)
             binding.editDeadline.setText(task.deadline)
+            binding.editIsConcluded.isChecked = task.isConcluded
+
 
             if (mode == "details") {
                 // Desabilita os campos para apenas visualização
                 binding.editTitle.isEnabled = false
                 binding.editDescription.isEnabled = false
                 binding.editDeadline.isEnabled = false
+                binding.editIsConcluded.isEnabled = false
 
                 // Esconde o botão salvar
                 binding.buttonSave.visibility = View.GONE
@@ -65,6 +68,7 @@ class TaskFormActivity : AppCompatActivity(){
             val title = binding.editTitle.text.toString().trim()
             val description = binding.editDescription.text.toString().trim()
             val deadline = binding.editDeadline.text.toString().trim()
+            val isConcluded = binding.editIsConcluded.isChecked
 
             if (title.isEmpty()) {
                 binding.editTitle.error = "Título é obrigatório"
@@ -78,7 +82,8 @@ class TaskFormActivity : AppCompatActivity(){
                 id = originalTask?.id ?: 0,
                 title = title,
                 description = description,
-                deadline = deadline
+                deadline = deadline,
+                isConcluded = isConcluded
             )
 
             val intent = Intent()

@@ -18,6 +18,7 @@ class TaskAdapter(
         val textTitle: TextView = itemView.findViewById(R.id.textTitle)
         val textDescription: TextView = itemView.findViewById(R.id.textDescription)
         val textDeadline: TextView = itemView.findViewById(R.id.textDeadline)
+        val textIsConcluded: TextView = itemView.findViewById(R.id.textIsConcluded)
 
         init {
             itemView.setOnLongClickListener {
@@ -45,6 +46,7 @@ class TaskAdapter(
         holder.textTitle.text = task.title
         holder.textDescription.text = task.description
         holder.textDeadline.text = "Data limite: ${task.deadline}"
+        holder.textIsConcluded.text = task.isConcluded.toString()
     }
 
     fun updateTasks(newTasks: List<Task>) {

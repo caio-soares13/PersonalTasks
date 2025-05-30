@@ -78,7 +78,8 @@ class MainActivity : AppCompatActivity() {
                 id = 0,  // se for autogerado pelo banco, pode deixar 0
                 title = "Tarefa Manual",
                 description = "Inserida diretamente no banco",
-                deadline = "01/06/2025"
+                deadline = "01/06/2025",
+                isConcluded = false
             )
             controller.addTask(task) // insere no banco
             loadTasks()              // carrega tasks do banco e atualiza RecyclerView
