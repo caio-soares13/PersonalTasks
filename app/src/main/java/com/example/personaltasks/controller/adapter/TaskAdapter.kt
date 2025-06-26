@@ -46,7 +46,12 @@ class TaskAdapter(
         holder.textTitle.text = task.title
         holder.textDescription.text = task.description
         holder.textDeadline.text = "Data limite: ${task.deadline}"
-        holder.textIsConcluded.text = task.isConcluded.toString()
+        if (task.isConcluded){
+            holder.textIsConcluded.text = "Concluída"
+        } else{
+            holder.textIsConcluded.text = "Pendente"
+        }
+
     }
 
     fun updateTasks(newTasks: List<Task>) {

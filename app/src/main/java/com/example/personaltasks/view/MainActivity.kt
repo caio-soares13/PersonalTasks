@@ -20,6 +20,7 @@ import com.example.personaltasks.model.Task
 import com.example.personaltasks.controller.adapter.TaskAdapter
 import com.example.personaltasks.data.DatabaseProvider
 import com.example.personaltasks.data.TaskRepository
+import com.google.firebase.FirebaseApp
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -55,6 +56,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        FirebaseApp.initializeApp(this)
+
+        // Verifica se inicializou
+        if (FirebaseApp.getApps(this).isNotEmpty()) {
+            Toast.makeText(this, "Firebase inicializado com sucesso!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Erro na inicialização do Firebase!", Toast.LENGTH_SHORT).show()
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
