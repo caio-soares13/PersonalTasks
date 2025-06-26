@@ -20,8 +20,9 @@ class TaskController(private val taskRepository: TaskRepository, private val ada
     }
 
     suspend fun deleteTask(task: Task) {
-        Log.d("TaskRepository", "Deletando task no banco: $task")
-        taskRepository.deleteTask(task)
+        Log.d("TaskRepository", "Deletando task: $task")
+        task.isDeleted = true
+        taskRepository.updateTask(task)
         refreshTasks()
     }
 
@@ -33,6 +34,10 @@ class TaskController(private val taskRepository: TaskRepository, private val ada
     suspend fun refreshTasks() {
         val tasks = taskRepository.getAllTasks()
         adapter.updateTasks(tasks)
+    }
+
+    suspend fun getDeletedTasks(): List<Task> {
+        return taskRepository.getAllTasks().filter { it.isDeleted }
     }
 
 }
