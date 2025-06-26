@@ -34,4 +34,5 @@ class TaskController(private val taskRepository: TaskRepository, private val ada
         val tasks = taskRepository.getAllTasks()
         adapter.updateTasks(tasks)
     }
+
 }
