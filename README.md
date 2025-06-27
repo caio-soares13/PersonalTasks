@@ -11,6 +11,8 @@ Um app Android simples de lista de tarefas pessoais, com suporte a criação, ed
 - Excluir tarefas
 - Visualizar detalhes de uma tarefa
 - Armazenamento persistente usando Room (SQLite)
+- Ver tarefas excluídas
+- Reativar tarefas excluídas
 
 ---
 
