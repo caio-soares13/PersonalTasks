@@ -7,7 +7,7 @@ import com.example.personaltasks.data.TaskRepository
 import com.example.personaltasks.model.Task
 
 class TaskController(private val taskRepository: TaskRepository,
-                     private val adapter: TaskAdapter,
+                     private val adapter: TaskAdapter?,
                      private val deletedAdapter: DeletedTaskAdapter?) {
 
     suspend fun addTask(task: Task) {
@@ -42,8 +42,12 @@ class TaskController(private val taskRepository: TaskRepository,
 
     suspend fun refreshActiveTasks() {
         val tasks = taskRepository.getAllActiveTasks()
-        adapter.updateTasks(tasks)
+        adapter?.updateTasks(tasks)
     }
 
+    suspend fun refreshDeletedTasks() {
+        val tasks = taskRepository.getAllDeletedTasks()
+        adapter?.updateTasks(tasks)
+    }
 
 }
