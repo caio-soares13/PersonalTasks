@@ -12,7 +12,9 @@ object DatabaseProvider {
                 context.applicationContext,
                 TaskDatabase::class.java,
                 "task_database"
-            ).build()
+            )
+                .fallbackToDestructiveMigration()
+                .build()
             INSTANCE = instance
             instance
         }
