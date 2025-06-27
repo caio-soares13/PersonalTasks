@@ -1,5 +1,6 @@
 package com.example.personaltasks.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
@@ -75,7 +76,11 @@ class DeletedTasksActivity : AppCompatActivity() {
                 true
             }
             R.id.menu_details -> {
-                // Abrir tela de detalhes ou algo similar
+                val intent = Intent(this, TaskFormActivity::class.java)
+                intent.putExtra("task", task)
+                intent.putExtra("mode", "details")
+                startActivity(intent)
+
                 Toast.makeText(this, "Detalhes: ${task.title}", Toast.LENGTH_SHORT).show()
                 true
             }
