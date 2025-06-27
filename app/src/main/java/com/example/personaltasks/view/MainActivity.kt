@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.personaltasks.R
 import com.example.personaltasks.controller.TaskController
+import com.example.personaltasks.controller.adapter.DeletedTaskAdapter
 import com.example.personaltasks.databinding.ActivityMainBinding
 import com.example.personaltasks.model.Task
 import com.example.personaltasks.controller.adapter.TaskAdapter
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         val taskDao = DatabaseProvider.getDatabase(this).taskDao()
         val repository = TaskRepository(taskDao)
 
-        controller = TaskController(repository, adapter)
+        controller = TaskController(repository, adapter, null)
 
         binding.recyclerTasks.layoutManager = LinearLayoutManager(this)
         binding.recyclerTasks.adapter = adapter

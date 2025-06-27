@@ -1,11 +1,14 @@
 package com.example.personaltasks.controller
 
 import android.util.Log
+import com.example.personaltasks.controller.adapter.DeletedTaskAdapter
 import com.example.personaltasks.controller.adapter.TaskAdapter
 import com.example.personaltasks.data.TaskRepository
 import com.example.personaltasks.model.Task
 
-class TaskController(private val taskRepository: TaskRepository, private val adapter: TaskAdapter) {
+class TaskController(private val taskRepository: TaskRepository,
+                     private val adapter: TaskAdapter,
+                     private val deletedAdapter: DeletedTaskAdapter?) {
 
     suspend fun addTask(task: Task) {
         Log.d("TaskRepository", "Salvando task no banco: $task")
@@ -26,11 +29,6 @@ class TaskController(private val taskRepository: TaskRepository, private val ada
         refreshActiveTasks()
     }
 
-    suspend fun reactivateTask(task: Task) {
-        val activeTask = task.copy(isDeleted = false)
-        taskRepository.updateTask(activeTask)
-    }
-
 
     suspend fun getActiveTasks(): List<Task> {
         Log.d("TaskRepository", "Tasks retornadas do banco")
@@ -47,9 +45,5 @@ class TaskController(private val taskRepository: TaskRepository, private val ada
         adapter.updateTasks(tasks)
     }
 
-    suspend fun refreshDeletedTasks() {
-        val tasks = taskRepository.getAllDeletedTasks()
-        adapter.updateTasks(tasks)
-    }
 
 }
