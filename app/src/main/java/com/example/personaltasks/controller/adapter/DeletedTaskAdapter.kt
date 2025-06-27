@@ -25,6 +25,7 @@ class DeletedTaskAdapter(
         val textDescription: TextView = itemView.findViewById(R.id.textDescription)
         val textDeadline: TextView = itemView.findViewById(R.id.textDeadline)
         val textIsConcluded: TextView = itemView.findViewById(R.id.textIsConcluded)
+        val textPriority: TextView = itemView.findViewById(R.id.textPriority)
 
         init {
             // Salva a posição do item clicado para o menu de contexto
@@ -55,6 +56,7 @@ class DeletedTaskAdapter(
         holder.textDescription.text = task.description
         holder.textDeadline.text = "Data limite: ${task.deadline}"
         holder.textIsConcluded.text = if (task.isConcluded) "Concluída" else "Pendente"
+        holder.textPriority.text = task.priority
     }
 
     override fun getItemCount(): Int = tasks.size

@@ -39,6 +39,13 @@
             android:textColor="#888888"
             android:textSize="12sp" />
 
+        <TextView
+        android:id="@+id/textPriority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#888888"
+        android:textSize="12sp" />
+
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

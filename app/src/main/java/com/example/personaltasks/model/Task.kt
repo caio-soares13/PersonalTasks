@@ -11,6 +11,7 @@ data class Task(
     val description: String,
     val deadline: String,
     var isConcluded: Boolean,
-    var isDeleted: Boolean = false
+    var isDeleted: Boolean = false,
+    var priority: String
 
 ) : Serializable

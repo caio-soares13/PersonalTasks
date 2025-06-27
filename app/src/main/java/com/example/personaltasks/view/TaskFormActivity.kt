@@ -39,6 +39,7 @@ class TaskFormActivity : AppCompatActivity(){
             binding.editDescription.setText(task.description)
             binding.editDeadline.setText(task.deadline)
             binding.editIsConcluded.isChecked = task.isConcluded
+            binding.editPriority.setText(task.priority)
 
 
             if (mode == "details") {
@@ -47,6 +48,7 @@ class TaskFormActivity : AppCompatActivity(){
                 binding.editDescription.isEnabled = false
                 binding.editDeadline.isEnabled = false
                 binding.editIsConcluded.isEnabled = false
+                binding.editPriority.isEnabled = false
 
                 // Esconde o botão salvar
                 binding.buttonSave.visibility = View.GONE
@@ -69,6 +71,8 @@ class TaskFormActivity : AppCompatActivity(){
             val description = binding.editDescription.text.toString().trim()
             val deadline = binding.editDeadline.text.toString().trim()
             val isConcluded = binding.editIsConcluded.isChecked
+            val priority = binding.editPriority.text.toString().trim()
+
 
             if (title.isEmpty()) {
                 binding.editTitle.error = "Título é obrigatório"
@@ -83,7 +87,9 @@ class TaskFormActivity : AppCompatActivity(){
                 title = title,
                 description = description,
                 deadline = deadline,
-                isConcluded = isConcluded
+                isConcluded = isConcluded,
+                priority = priority
+
             )
 
             val intent = Intent()

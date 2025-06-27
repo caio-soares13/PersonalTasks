@@ -19,6 +19,7 @@ class TaskAdapter(
         val textDescription: TextView = itemView.findViewById(R.id.textDescription)
         val textDeadline: TextView = itemView.findViewById(R.id.textDeadline)
         val textIsConcluded: TextView = itemView.findViewById(R.id.textIsConcluded)
+        val textPriority: TextView = itemView.findViewById(R.id.textPriority)
 
         init {
             itemView.setOnLongClickListener {
@@ -51,6 +52,7 @@ class TaskAdapter(
         } else{
             holder.textIsConcluded.text = "Pendente"
         }
+        holder.textPriority.text = task.priority
 
     }
 
