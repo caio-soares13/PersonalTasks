@@ -83,11 +83,13 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerTasks.layoutManager = LinearLayoutManager(this)
         binding.recyclerTasks.adapter = adapter
 
+        loadTasks()
+
     }
 
     private fun loadTasks() {
         lifecycleScope.launch {
-            val tasksFromDb = controller.getTasks()
+            val tasksFromDb = controller.getActiveTasks()
             adapter.updateTasks(tasksFromDb)
         }
     }

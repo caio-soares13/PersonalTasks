@@ -10,33 +10,46 @@ class TaskController(private val taskRepository: TaskRepository, private val ada
     suspend fun addTask(task: Task) {
         Log.d("TaskRepository", "Salvando task no banco: $task")
         taskRepository.insertTask(task)
-        refreshTasks()
+        refreshActiveTasks()
     }
 
     suspend fun updateTask(updatedTask: Task) {
         Log.d("TaskRepository", "Alterando task no banco: $updatedTask")
         taskRepository.updateTask(updatedTask)
-        refreshTasks()
+        refreshActiveTasks()
     }
 
     suspend fun deleteTask(task: Task) {
         Log.d("TaskRepository", "Deletando task: $task")
-        taskRepository.deleteTask(task)
-        refreshTasks()
+        val deletedTask = task.copy(isDeleted = true)
+        taskRepository.updateTask(deletedTask)
+        refreshActiveTasks()
     }
 
-    suspend fun getTasks(): List<Task> {
+    suspend fun reactivateTask(task: Task) {
+        val activeTask = task.copy(isDeleted = false)
+        taskRepository.updateTask(activeTask)
+    }
+
+
+    suspend fun getActiveTasks(): List<Task> {
         Log.d("TaskRepository", "Tasks retornadas do banco")
-        return taskRepository.getAllTasks()
+        return taskRepository.getAllActiveTasks()
     }
 
-    suspend fun refreshTasks() {
-        val tasks = taskRepository.getAllTasks()
+    suspend fun getDeletedTasks(): List<Task> {
+        Log.d("TaskRepository", "Tasks retornadas do banco")
+        return taskRepository.getAllDeletedTasks()
+    }
+
+    suspend fun refreshActiveTasks() {
+        val tasks = taskRepository.getAllActiveTasks()
         adapter.updateTasks(tasks)
     }
 
-    /*suspend fun getDeletedTasks(): List<Task> {
-        return taskRepository.getAllTasks().filter { it.isDeleted }
-    }*/
+    suspend fun refreshDeletedTasks() {
+        val tasks = taskRepository.getAllDeletedTasks()
+        adapter.updateTasks(tasks)
+    }
 
 }
