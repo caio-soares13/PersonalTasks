@@ -1,23 +1,46 @@
 package com.example.personaltasks.controller.adapter
 
 
+import android.view.ContextMenu
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.personaltasks.R
 import com.example.personaltasks.model.Task
+import android.view.View.OnCreateContextMenuListener
 
 class DeletedTaskAdapter(
-    private var tasks: List<Task> = listOf()
+    private var tasks: List<Task> = listOf(),
+    private val onReactivate: (Task) -> Unit,
+    private val onDetails: (Task) -> Unit
 ) : RecyclerView.Adapter<DeletedTaskAdapter.DeletedTaskViewHolder>() {
 
-    inner class DeletedTaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private var selectedPosition = -1
+
+    inner class DeletedTaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener  {
         val textTitle: TextView = itemView.findViewById(R.id.textTitle)
         val textDescription: TextView = itemView.findViewById(R.id.textDescription)
         val textDeadline: TextView = itemView.findViewById(R.id.textDeadline)
         val textIsConcluded: TextView = itemView.findViewById(R.id.textIsConcluded)
+
+        init {
+            // Salva a posição do item clicado para o menu de contexto
+            itemView.setOnLongClickListener {
+                selectedPosition = adapterPosition
+                itemView.showContextMenu()
+                true
+            }
+            // Associa o menu de contexto à view
+            itemView.setOnCreateContextMenuListener(this)
+        }
+
+        override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+            val inflater = MenuInflater(itemView.context)
+            inflater.inflate(R.menu.menu_deleted_task, menu)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeletedTaskViewHolder {
@@ -42,4 +65,5 @@ class DeletedTaskAdapter(
     }
 
     fun getCurrentTasks(): List<Task> = tasks
+    fun getSelectedPosition() = selectedPosition
 }

@@ -27,6 +27,14 @@ class TaskController(private val taskRepository: TaskRepository,
         val deletedTask = task.copy(isDeleted = true)
         taskRepository.updateTask(deletedTask)
         refreshActiveTasks()
+        refreshDeletedTasks()
+    }
+
+    suspend fun reactivateTask(task: Task) {
+        val activeTask = task.copy(isDeleted = false)
+        taskRepository.updateTask(activeTask)
+        refreshDeletedTasks()
+        refreshActiveTasks()
     }
 
 
@@ -47,7 +55,7 @@ class TaskController(private val taskRepository: TaskRepository,
 
     suspend fun refreshDeletedTasks() {
         val tasks = taskRepository.getAllDeletedTasks()
-        adapter?.updateTasks(tasks)
+        deletedAdapter?.updateTasks(tasks)
     }
 
 }

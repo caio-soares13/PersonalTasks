@@ -166,4 +166,10 @@ class MainActivity : AppCompatActivity() {
             else -> super.onContextItemSelected(item)
         }
     }
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            controller.refreshActiveTasks()
+        }
+    }
 }
