@@ -107,6 +107,11 @@ class MainActivity : AppCompatActivity() {
                 taskFormLauncher.launch(intent)
                 true
             }
+            R.id.menu_deleted_tasks -> {
+                val intent = Intent(this, DeletedTasksActivity::class.java)
+                startActivity(intent)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

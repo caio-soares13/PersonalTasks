@@ -6,4 +6,10 @@
         android:title="Nova Tarefa"
         android:icon="@android:drawable/ic_input_add"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_deleted_tasks"
+        android:title="Tarefas Excluídas"
+        android:icon="@android:drawable/ic_menu_delete"
+        app:showAsAction="never" />
+
 </menu>
